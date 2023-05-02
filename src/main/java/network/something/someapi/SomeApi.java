@@ -10,7 +10,7 @@ import network.something.someapi.register.ItemRegister;
 
 @Mod(SomeApi.MOD_ID)
 public class SomeApi {
-    public static final String MOD_ID = "some-api";
+    public static final String MOD_ID = "someapi";
 
     public static final SomeLogger LOG = new SomeLogger(MOD_ID);
 

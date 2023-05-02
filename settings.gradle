@@ -6,4 +6,4 @@ pluginManagement {
     }
 }
 
-rootProject.name = 'some-api'
+rootProject.name = 'someapi'

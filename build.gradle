@@ -9,7 +9,7 @@ group = 'network.something'
 version = "${forge_version}--${mod_version}"
 
 java {
-    archivesBaseName = 'some-api'
+    archivesBaseName = 'someapi'
     toolchain.languageVersion = JavaLanguageVersion.of(17)
 }
 
@@ -21,7 +21,7 @@ minecraft {
             workingDirectory project.file('run')
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
-            property 'forge.enabledGameTestNamespaces', 'some-api'
+            property 'forge.enabledGameTestNamespaces', 'someapi'
 
             mods {
                 someapi {
@@ -37,7 +37,7 @@ minecraft {
 
             property 'forge.logging.console.level', 'debug'
 
-            property 'forge.enabledGameTestNamespaces', 'some-api'
+            property 'forge.enabledGameTestNamespaces', 'someapi'
 
             mods {
                 someapi {
@@ -53,7 +53,7 @@ minecraft {
 
             property 'forge.logging.console.level', 'debug'
 
-            property 'forge.enabledGameTestNamespaces', 'some-api'
+            property 'forge.enabledGameTestNamespaces', 'someapi'
 
             mods {
                 someapi {
