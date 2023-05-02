@@ -21,9 +21,17 @@ public class AnnotationScanner {
             method.setAccessible(true);
             return (T) method.invoke(null);
         } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
-        return null;
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <T> T getStaticFieldValue(Field field) {
+        try {
+            return (T) field.get(null);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static @Nullable Method getFirstMethod(Class<? extends Annotation> annotation, Class<?> clazz) {
@@ -43,6 +51,15 @@ public class AnnotationScanner {
             }
         }
         return result;
+    }
+
+    public static @Nullable Field getFirstField(Class<? extends Annotation> annotation, Class<?> clazz) {
+        for (var field : clazz.getDeclaredFields()) {
+            if (field.isAnnotationPresent(annotation)) {
+                return field;
+            }
+        }
+        return null;
     }
 
     public static List<Class<?>> getClasses(Class<? extends Annotation> annotation) {

@@ -12,4 +12,8 @@ public @interface SomeBlock {
 
     String blockId();
 
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target(ElementType.FIELD)
+    @interface CreativeTab {
+    }
 }

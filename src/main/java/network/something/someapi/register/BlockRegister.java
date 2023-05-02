@@ -24,6 +24,11 @@ public class BlockRegister {
             var metadata = clazz.getAnnotation(SomeBlock.class);
             new SomeLogger(metadata.modId()).info("[Block] %s...", metadata.blockId());
 
+            var creativeModeTabField = AnnotationScanner.getFirstField(SomeBlock.CreativeTab.class, clazz);
+            var creativeModeTab = creativeModeTabField == null
+                    ? CreativeModeTab.TAB_MISC
+                    : AnnotationScanner.<CreativeModeTab>getStaticFieldValue(creativeModeTabField);
+
             SomeBlocks.registerBlock(metadata.modId(), metadata.blockId(), () -> {
                 try {
                     var constructor = clazz.getConstructor();
@@ -31,7 +36,7 @@ public class BlockRegister {
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
-            }, CreativeModeTab.TAB_MISC);
+            }, creativeModeTab);
         }
 
         BLOCKS.forEach((modId, deferredRegister) -> deferredRegister.register(eventBus));
