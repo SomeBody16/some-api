@@ -35,7 +35,7 @@ public class SomeBlockEntities {
 
     public static <T extends BlockEntity> RegistryObject<BlockEntityType<T>> registerBlockEntity(String modId, String blockEntityId,
                                                                                                  Supplier<BlockEntityType<T>> supplier) {
-        if (BlockEntityRegister.BLOCK_ENTITIES.containsKey(modId)) {
+        if (!BlockEntityRegister.BLOCK_ENTITIES.containsKey(modId)) {
             var deferredRegister = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITIES, modId);
             BlockEntityRegister.BLOCK_ENTITIES.put(modId, deferredRegister);
         }

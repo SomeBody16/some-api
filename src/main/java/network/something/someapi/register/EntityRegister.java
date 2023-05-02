@@ -24,7 +24,7 @@ public class EntityRegister {
         for (var entityClass : entityClasses) {
             var metadata = entityClass.getAnnotation(SomeEntity.class);
             if (!Objects.equals(metadata.modId(), modId)) continue;
-            logger.info("[Entity] %s...", metadata.entityId());
+            logger.info("[Entity] {}...", metadata.entityId());
 
             var builder = AnnotationScanner.getFirstMethod(SomeEntity.Type.class, entityClass);
             assert builder != null;

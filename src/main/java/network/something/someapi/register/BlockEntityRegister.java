@@ -22,7 +22,7 @@ public class BlockEntityRegister {
         for (var clazz : classes) {
             var metadata = clazz.getAnnotation(SomeBlockEntity.class);
             if (!Objects.equals(metadata.modId(), modId)) continue;
-            logger.info("[Block Entity] %s...", metadata.blockId());
+            logger.info("[Block Entity] {}...", metadata.blockId());
 
             var builder = AnnotationScanner.getFirstMethod(SomeBlockEntity.Type.class, clazz);
             assert builder != null;

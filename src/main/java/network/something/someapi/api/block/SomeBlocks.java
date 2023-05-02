@@ -37,7 +37,7 @@ public class SomeBlocks {
     }
 
     public static <T extends Block> RegistryObject<T> registerBlock(String modId, String blockId, Supplier<T> blockSupplier, CreativeModeTab tab) {
-        if (BlockRegister.BLOCKS.containsKey(modId)) {
+        if (!BlockRegister.BLOCKS.containsKey(modId)) {
             var deferredRegister = DeferredRegister.create(ForgeRegistries.BLOCKS, modId);
             BlockRegister.BLOCKS.put(modId, deferredRegister);
         }

@@ -23,7 +23,7 @@ public class BlockRegister {
         for (var clazz : classes) {
             var metadata = clazz.getAnnotation(SomeBlock.class);
             if (!Objects.equals(metadata.modId(), modId)) continue;
-            logger.info("[Block] %s...", metadata.blockId());
+            logger.info("[Block] {}...", metadata.blockId());
 
             SomeBlocks.registerBlock(metadata.modId(), metadata.blockId(), () -> {
                 try {

@@ -21,7 +21,7 @@ public class ItemRegister {
         for (var clazz : classes) {
             var metadata = clazz.getAnnotation(SomeItem.class);
             if (!Objects.equals(metadata.modId(), modId)) continue;
-            logger.info("[Item] %s...", metadata.itemId());
+            logger.info("[Item] {}...", metadata.itemId());
 
             SomeItems.registerItem(metadata.modId(), metadata.itemId(), () -> {
                 try {
