@@ -7,9 +7,14 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface ModBlock {
+public @interface SomeBlockEntity {
     String modId();
 
     String blockId();
+
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target(ElementType.METHOD)
+    @interface Type {
+    }
 
 }

@@ -5,8 +5,8 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import network.something.someapi.SomeApi;
 import network.something.someapi.api.annotation.AnnotationScanner;
-import network.something.someapi.api.block.ModBlockEntity;
 import network.something.someapi.api.block.SomeBlockEntities;
+import network.something.someapi.api.block.SomeBlockEntity;
 import network.something.someapi.api.log.SomeLogger;
 
 import java.util.HashMap;
@@ -17,13 +17,13 @@ public class BlockEntityRegister {
 
 
     public static void register(IEventBus eventBus) {
-        var classes = AnnotationScanner.getClasses(ModBlockEntity.class);
+        var classes = AnnotationScanner.getClasses(SomeBlockEntity.class);
         SomeApi.LOG.info("Registering {} block entities...", classes.size());
         for (var clazz : classes) {
-            var metadata = clazz.getAnnotation(ModBlockEntity.class);
+            var metadata = clazz.getAnnotation(SomeBlockEntity.class);
             new SomeLogger(metadata.modId()).info("[Block Entity] %s...", metadata.blockId());
 
-            var builder = AnnotationScanner.getFirstMethod(ModBlockEntity.Type.class, clazz);
+            var builder = AnnotationScanner.getFirstMethod(SomeBlockEntity.Type.class, clazz);
             assert builder != null;
 
             SomeBlockEntities.registerBlockEntity(metadata.modId(), metadata.blockId(),
