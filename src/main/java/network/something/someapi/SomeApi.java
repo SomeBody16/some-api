@@ -1,7 +1,7 @@
 package network.something.someapi;
 
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import network.something.someapi.api.log.SomeLogger;
 import network.something.someapi.register.BlockEntityRegister;
 import network.something.someapi.register.BlockRegister;
@@ -15,12 +15,13 @@ public class SomeApi {
     public static final SomeLogger LOG = new SomeLogger(MOD_ID);
 
     public SomeApi() {
-        LOG.info("Starting SomeApi...");
-        var eventBus = FMLJavaModLoadingContext.get().getModEventBus();
+    }
 
-        ItemRegister.register(eventBus);
-        BlockRegister.register(eventBus);
-        BlockEntityRegister.register(eventBus);
-        EntityRegister.register(eventBus);
+    public static void register(IEventBus eventBus, String modId) {
+        var logger = new SomeLogger(modId);
+        ItemRegister.register(eventBus, modId, logger);
+        BlockRegister.register(eventBus, modId, logger);
+        BlockEntityRegister.register(eventBus, modId, logger);
+        EntityRegister.register(eventBus, modId, logger);
     }
 }

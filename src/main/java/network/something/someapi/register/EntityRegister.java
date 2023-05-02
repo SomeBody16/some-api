@@ -5,10 +5,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
-import network.something.someapi.SomeApi;
 import network.something.someapi.api.annotation.AnnotationScanner;
 import network.something.someapi.api.entity.SomeEntities;
 import network.something.someapi.api.entity.SomeEntity;
@@ -16,17 +13,18 @@ import network.something.someapi.api.log.SomeLogger;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
-@Mod.EventBusSubscriber(modid = SomeApi.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class EntityRegister {
     public static final Map<String, DeferredRegister<EntityType<?>>> ENTITIES = new HashMap<>();
 
-    public static void register(IEventBus eventBus) {
+    public static void register(IEventBus eventBus, String modId, SomeLogger logger) {
         var entityClasses = AnnotationScanner.getClasses(SomeEntity.class);
-        SomeApi.LOG.info("Registering {} entities...", entityClasses.size());
+        logger.info("Registering {} entities...", entityClasses.size());
         for (var entityClass : entityClasses) {
             var metadata = entityClass.getAnnotation(SomeEntity.class);
-            new SomeLogger(metadata.modId()).info("[Block] %s...", metadata.entityId());
+            if (!Objects.equals(metadata.modId(), modId)) continue;
+            logger.info("[Block] %s...", metadata.entityId());
 
             var builder = AnnotationScanner.getFirstMethod(SomeEntity.Type.class, entityClass);
             assert builder != null;
@@ -35,17 +33,17 @@ public class EntityRegister {
                     () -> AnnotationScanner.invokeStaticMethod(builder));
         }
 
-        ENTITIES.forEach((modId, deferredRegister) -> deferredRegister.register(eventBus));
+        ENTITIES.get(modId).register(eventBus);
+        eventBus.addListener((EntityAttributeCreationEvent event) -> onEntityAttributes(event, logger));
     }
 
     @SuppressWarnings("unchecked")
-    @SubscribeEvent
-    public static void onEntityAttributes(EntityAttributeCreationEvent event) {
+    public static void onEntityAttributes(EntityAttributeCreationEvent event, SomeLogger logger) {
         var entityClasses = AnnotationScanner.getClasses(SomeEntity.class);
-        SomeApi.LOG.info("Registering attributes for {} entities...", entityClasses.size());
+        logger.info("Registering attributes for {} entities...", entityClasses.size());
         for (var entityClass : entityClasses) {
             var metadata = entityClass.getAnnotation(SomeEntity.class);
-            new SomeLogger(metadata.modId()).info("[Entity Attributes] %s...", metadata.entityId());
+            logger.info("[Entity Attributes] %s...", metadata.entityId());
 
             var getSupplier = AnnotationScanner.getFirstMethod(SomeEntity.Attributes.class, entityClass);
             if (getSupplier == null) continue;
