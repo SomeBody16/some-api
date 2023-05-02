@@ -33,6 +33,8 @@ public class ItemRegister {
             });
         }
 
-        ITEMS.get(modId).register(eventBus);
+        if (ITEMS.containsKey(modId)) {
+            ITEMS.get(modId).register(eventBus);
+        }
     }
 }

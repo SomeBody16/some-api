@@ -24,7 +24,7 @@ public class EntityRegister {
         for (var entityClass : entityClasses) {
             var metadata = entityClass.getAnnotation(SomeEntity.class);
             if (!Objects.equals(metadata.modId(), modId)) continue;
-            logger.info("[Block] %s...", metadata.entityId());
+            logger.info("[Entity] %s...", metadata.entityId());
 
             var builder = AnnotationScanner.getFirstMethod(SomeEntity.Type.class, entityClass);
             assert builder != null;
@@ -33,8 +33,10 @@ public class EntityRegister {
                     () -> AnnotationScanner.invokeStaticMethod(builder));
         }
 
-        ENTITIES.get(modId).register(eventBus);
-        eventBus.addListener((EntityAttributeCreationEvent event) -> onEntityAttributes(event, logger));
+        if (ENTITIES.containsKey(modId)) {
+            ENTITIES.get(modId).register(eventBus);
+            eventBus.addListener((EntityAttributeCreationEvent event) -> onEntityAttributes(event, logger));
+        }
     }
 
     @SuppressWarnings("unchecked")

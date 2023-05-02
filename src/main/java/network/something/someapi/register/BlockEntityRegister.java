@@ -31,6 +31,8 @@ public class BlockEntityRegister {
                     () -> AnnotationScanner.invokeStaticMethod(builder));
         }
 
-        BLOCK_ENTITIES.get(modId).register(eventBus);
+        if (BLOCK_ENTITIES.containsKey(modId)) {
+            BLOCK_ENTITIES.get(modId).register(eventBus);
+        }
     }
 }

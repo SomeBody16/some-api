@@ -25,11 +25,6 @@ public class BlockRegister {
             if (!Objects.equals(metadata.modId(), modId)) continue;
             logger.info("[Block] %s...", metadata.blockId());
 
-            var creativeModeTabField = AnnotationScanner.getFirstField(SomeBlock.CreativeTab.class, clazz);
-            var creativeModeTab = creativeModeTabField == null
-                    ? CreativeModeTab.TAB_MISC
-                    : AnnotationScanner.<CreativeModeTab>getStaticFieldValue(creativeModeTabField);
-
             SomeBlocks.registerBlock(metadata.modId(), metadata.blockId(), () -> {
                 try {
                     var constructor = clazz.getConstructor();
@@ -37,9 +32,19 @@ public class BlockRegister {
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
-            }, creativeModeTab);
+            }, getCreativeModeTab(clazz));
         }
 
-        BLOCKS.get(modId).register(eventBus);
+        if (BLOCKS.containsKey(modId)) {
+            BLOCKS.get(modId).register(eventBus);
+        }
+    }
+
+    private static CreativeModeTab getCreativeModeTab(Class<?> clazz) {
+        var getTab = AnnotationScanner.getFirstMethod(SomeBlock.CreativeTab.class, clazz);
+        if (getTab == null) {
+            return CreativeModeTab.TAB_BUILDING_BLOCKS;
+        }
+        return AnnotationScanner.invokeStaticMethod(getTab);
     }
 }
